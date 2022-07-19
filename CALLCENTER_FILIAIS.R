@@ -24,7 +24,7 @@ rcvd_CRI <- dbGetQuery(con2,"
                AGENT,
                 CONVERT(LASTEDFORSECONDS,DECIMAL) LASTEDFORSECONDS,
                 'ATENDIDA' TIPO,
-                  ESPERA
+                  CONVERT(ESPERA,DECIMAL)ESPERA
                   
                    FROM agent_activity AGT,
                    
@@ -55,7 +55,7 @@ abd_CRI <- dbGetQuery(con2,"SELECT
                                 AGENT AGENT,
                                  CONVERT(INFO3,DECIMAL) LASTEDFORSECONDS,
                                   'PERDIDA' TIPO,
-                                    INFO3 ESPERA
+                                    CONVERT(INFO3,DECIMAL) ESPERA
                                      FROM queue_stats_full 
                                       WHERE 
                                        DATE_FORMAT(DATETIME, '%Y-%m-%d') =CURDATE()
@@ -96,7 +96,7 @@ SELECT
                AGENT,
                 CONVERT(LASTEDFORSECONDS,DECIMAL) LASTEDFORSECONDS,
                 'ATENDIDA' TIPO,
-                  ESPERA
+                  CONVERT(ESPERA,DECIMAL)ESPERA
                   
                    FROM agent_activity AGT,
                    
@@ -127,7 +127,7 @@ abd_CHA <- dbGetQuery(con2,"SELECT
                                 AGENT AGENT,
                                  CONVERT(INFO3,DECIMAL) LASTEDFORSECONDS,
                                   'PERDIDA' TIPO,
-                                    INFO3 ESPERA
+                                    CONVERT(INFO3,DECIMAL) ESPERA
                                      FROM queue_stats_full 
                                       WHERE 
                                        DATE_FORMAT(DATETIME, '%Y-%m-%d') =CURDATE()
@@ -171,7 +171,7 @@ SELECT
                AGENT,
                 CONVERT(LASTEDFORSECONDS,DECIMAL) LASTEDFORSECONDS,
                 'ATENDIDA' TIPO,
-                  ESPERA
+                  CONVERT(ESPERA,DECIMAL)ESPERA
                   
                    FROM agent_activity AGT,
                    
@@ -202,7 +202,7 @@ abd_JOI <- dbGetQuery(con2,"SELECT
                                 AGENT AGENT,
                                  CONVERT(INFO3,DECIMAL) LASTEDFORSECONDS,
                                   'PERDIDA' TIPO,
-                                    INFO3 ESPERA
+                                    CONVERT(INFO3,DECIMAL) ESPERA
                                      FROM queue_stats_full 
                                       WHERE 
                                        DATE_FORMAT(DATETIME, '%Y-%m-%d') =CURDATE()
