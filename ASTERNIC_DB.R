@@ -12,3 +12,14 @@ queue_stats_full <- dbGetQuery(con2,"
 
 
 View(queue_stats_full)
+
+
+agent_activity <- dbGetQuery(con2,"
+           SELECT *
+           FROM agent_activity
+           WHERE
+           DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()")
+
+
+
+View(agent_activity)

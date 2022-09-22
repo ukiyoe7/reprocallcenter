@@ -108,9 +108,8 @@ dtf3 <- dtf2 %>% group_by(MES=floor_date(DATA,"month"),
                                   AGENTE,
                                    TELEFONE,
                                     DURACAO,
-                                     TEMPO_ESPERA,
-                                      NOME) %>% 
-                                       summarize(n=n_distinct(ID))
+                                     TEMPO_ESPERA,NOME) %>% 
+                   summarize(n=n_distinct(ID))
 
 sheet_write(dtf2,ss="1Y7ciYhCMSVKs9F9fzhuHCHyn74gcMHegNiqlyxDdTv0",sheet="DADOS")
 
