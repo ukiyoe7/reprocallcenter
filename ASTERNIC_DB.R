@@ -18,7 +18,7 @@ agent_activity <- dbGetQuery(con2,"
            SELECT *
            FROM agent_activity
            WHERE
-           DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()")
+           DATE_FORMAT(DATETIME, '%Y-%m-%d')='2022-09-27'")
 
 
 

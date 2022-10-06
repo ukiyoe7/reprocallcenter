@@ -230,12 +230,84 @@ trsf_JOI <- dbGetQuery(con2,"SELECT
 
 dt_JOI <-rbind(rcvd_JOI,abd_JOI,trsf_JOI) %>% mutate(FILIAL='JOINVILLE')
 
+## BC ========================================================================================
+
+#Received calls
+
+
+rcvd_BC <- dbGetQuery(con2,"
+SELECT 
+            DATE_FORMAT(AGT.datetime, '%H') HORA,
+             DATETIME,
+              QUEUE,
+               AGENT,
+                CONVERT(LASTEDFORSECONDS,DECIMAL) LASTEDFORSECONDS,
+                'ATENDIDA' TIPO,
+                  CONVERT(ESPERA,DECIMAL)ESPERA
+                  
+                   FROM agent_activity AGT,
+                   
+                   (SELECT
+                     UNIQUEID,
+                      CONVERT(INFO1,DECIMAL) ESPERA 
+                      
+                       FROM queue_stats_full
+                        WHERE
+                         DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()
+                          AND EVENT='CONNECT'
+                           AND QUEUE IN ('5000') ) AS WAIT
+                           
+                            WHERE 
+                             AGT.UNIQUEID=WAIT.UNIQUEID 
+                              AND DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()
+                               AND INFO1 IN ('COMPLETECALLER','COMPLETEAGENT')
+                                AND QUEUE IN ('5000')
+                                 ORDER BY datetime DESC")
+
+
+#abandoned calls
+
+abd_BC <- dbGetQuery(con2,"SELECT 
+                             DATE_FORMAT(datetime, '%H') HORA,
+                              DATETIME DATETIME,
+                               QUEUE QUEUE,
+                                AGENT AGENT,
+                                 CONVERT(INFO3,DECIMAL) LASTEDFORSECONDS,
+                                  'PERDIDA' TIPO,
+                                    CONVERT(INFO3,DECIMAL) ESPERA
+                                     FROM queue_stats_full 
+                                      WHERE 
+                                       DATE_FORMAT(DATETIME, '%Y-%m-%d') =CURDATE()
+                                        AND EVENT='ABANDON'
+                                         AND INFO3>=9 AND
+                                           QUEUE IN ('5000')
+                                            ORDER BY datetime DESC")
+
+#transferred calls
+
+trsf_BC <- dbGetQuery(con2,"SELECT 
+                              DATE_FORMAT(datetime, '%H') HORA,
+                               DATETIME,
+                                QUEUE,
+                                 AGENT,
+                                  CONVERT(LASTEDFORSECONDS,DECIMAL) LASTEDFORSECONDS,
+                                   'TRANSFERIDA' TIPO,
+                                     CONVERT(0,DECIMAL) ESPERA 
+                                      FROM agent_activity 
+                                       WHERE 
+                                        DATE_FORMAT(DATETIME, '%Y-%m-%d') =CURDATE()
+                                         AND INFO1='TRANSFER'
+                                          AND QUEUE IN ('5000')
+                                           ORDER BY datetime DESC")
+
+dt_BC <-rbind(rcvd_BC,abd_BC,trsf_BC) %>% mutate(FILIAL='BC')
+
 ## ==================================================================================================
 
 
 ## UNION ALL DATA
 
-dt <- union_all(dt_CRI,dt_CHA) %>%  union_all(.,dt_JOI)
+dt <- union_all(dt_CRI,dt_CHA) %>%  union_all(.,dt_JOI) %>%  union_all(.,dt_BC)
 
 ## WRITE ON GGSHEETS
 

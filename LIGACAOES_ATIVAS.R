@@ -10,7 +10,7 @@ fila_ativos <- dbGetQuery(con2,"
            FROM agent_activity
            WHERE
            info1<>'' AND 
-           DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()
+           DATE_FORMAT(DATETIME, '%Y-%m-%d')>='2022-09-01'
            AND QUEUE LIKE '%ATIVO%'
                           ")
 
@@ -24,7 +24,7 @@ fila_ativos_failed <- dbGetQuery(con2,"
            FROM agent_activity
            WHERE
            info1<>'' AND 
-           DATE_FORMAT(DATETIME, '%Y-%m-%d')=CURDATE()
+           DATE_FORMAT(DATETIME, '%Y-%m-%d')>='2022-09-01'
            AND QUEUE LIKE '%ATIVO%' AND EVENT='FAILED OUT'
                           ")
 
